@@ -1,18 +1,38 @@
 'use strict';
-const data = [
-  {id:1, title: 'Cats are awesome', author: 'Cat Lady'},
-  {id:2, title: 'Doges are awesome', author: 'Super Doge'},
-  {id:3, title: 'Lizards are awesome', author: 'Lizzy Lizard'},
-  {id:4, title: 'ducks are awesome', author: 'Sir Quacks a lot'}
-];
 
 class CardPage extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      data
+      data: [],
     };
+
+    this.onCardData = this.onCardData.bind(this);
+    this.onCardError = this.onCardError.bind(this);
+    this.loadDataFromCards = this.loadDataFromCards.bind(this);
+  }
+
+  onCardData(data) {
+    const parsedCardData = JSON.parse(data.currentTarget.response).data;
+    console.log(parsedCardData);
+    this.setState({data:parsedCardData});
+  }
+
+  onCardError(error){
+    console.error(error);
+  }
+
+  loadDataFromCards() {
+    const oReq = new XMLHttpRequest();
+    oReq.addEventListener('load', this.onCardData);
+    oReq.addEventListener('error', this.onCardError);
+    oReq.open('GET', this.props.cardUrl);
+    oReq.send();
+  }
+
+  componentWillMount() {
+    this.loadDataFromCards();
   }
 
   render() {
@@ -38,7 +58,7 @@ class CardList extends React.Component {
     console.log(this.props);
     const cardListNode = this.props.data.map((dataItem) => {
       return (
-        <CardItem title={dataItem.title} author={dataItem.author} key={dataItem.id}/>
+        <CardItem title={dataItem.title} priority={dataItem.priority} status={dataItem.status} key={dataItem.id}/>
       )
     })
     return (
@@ -55,13 +75,14 @@ class CardItem extends React.Component {
     return(
       <div className="cardItem">
         <h4>Title: {this.props.title}</h4>
-        <p>Author: {this.props.author}</p>
+        <p>Author: {this.props.priority}</p>
+        <p>Status: {this.props.status}</p>
       </div>
     )
   }
 }
 
 ReactDOM.render(
-  <CardPage cardUrl={'connection to database'}/>,
+  <CardPage cardUrl={'http://localhost:3000/api'}/>,
     document.getElementById('container')
   )

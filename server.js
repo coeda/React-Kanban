@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const db = require('./models');
+const Card = db.Card;
+const User = db.User;
 
 app.use(express.static('./public'));
 app.set('view engine', 'pug');
@@ -33,12 +35,6 @@ let isLoggedIn = (req) => {
 };
 
 app.get('/', function(req, res) {
-  //to view list of gallery photos
-  if(req.user === undefined) {
-    username = 'Not logged in';
-  } else {
-    username = req.user.username;
-  }
   Photo.findAll({
     order: [['id', 'DESC']]
   })
@@ -49,6 +45,15 @@ app.get('/', function(req, res) {
       isLoggedIn: isLoggedIn(req),
       username: username
     });
+  });
+});
+
+app.get('/api', (req, res) => {
+  Card.findAll({
+    order: [['id', 'DESC']]
+  })
+  .then((data) => {
+    res.json({data});
   });
 });
 
