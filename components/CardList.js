@@ -4,21 +4,66 @@ import styles from './Styles.scss';
 import dragable from './dragable';
 
 class CardList extends React.Component {
+
   render() {
-    console.log(this.props);
-    const queueCardListNode = this.props.queueData.map((dataItem) => {
+    let cardList = this.props.data.map((data, index)=> {
+      data.index = index;
+      return data
+    })
+
+      let queueCardList = cardList.filter((data) => {
+        if(data.status === 'queue'){
+          return data;
+        }
+      })
+      let inProgressCardList = cardList.filter((data) => {
+        if(data.status === 'in progress'){
+          return data;
+        }
+      })
+      let completedCardList = cardList.filter((data) => {
+        if(data.status === 'completed'){
+          return data;
+        }
+      })
+
+    const queueCardListNode = queueCardList.map((dataItem) => {
       return (
-        <CardItem loadCards={this.props.loadCards} title={dataItem.title} priority={dataItem.priority} status={dataItem.status} assignedTo={dataItem.assignedTo} createdBy={dataItem.createdBy} id={dataItem.id} key={dataItem.id}/>
+        <CardItem loadDataFromCards={this.props.loadDataFromCards}
+        title={dataItem.title}
+        priority={dataItem.priority}
+        status={dataItem.status}
+        assignedTo={dataItem.assignedTo}
+        createdBy={dataItem.createdBy}
+        id={dataItem.id}
+        key={dataItem.id}
+        index={dataItem.index}/>
       )
     })
-    const inProgressCardListNode = this.props.inProgressData.map((dataItem) => {
+    const inProgressCardListNode = inProgressCardList.map((dataItem) => {
       return (
-        <CardItem loadCards={this.props.loadCards} title={dataItem.title} priority={dataItem.priority} status={dataItem.status} assignedTo={dataItem.assignedTo} createdBy={dataItem.createdBy} id={dataItem.id} key={dataItem.id}/>
+        <CardItem loadDataFromCards={this.props.loadDataFromCards}
+        title={dataItem.title}
+        priority={dataItem.priority}
+        status={dataItem.status}
+        assignedTo={dataItem.assignedTo}
+        createdBy={dataItem.createdBy}
+        id={dataItem.id}
+        key={dataItem.id}
+        index={dataItem.index}/>
       )
     })
-    const completedCardListNode = this.props.completedData.map((dataItem) => {
+    const completedCardListNode = completedCardList.map((dataItem) => {
       return (
-        <CardItem loadCards={this.props.loadCards} title={dataItem.title} priority={dataItem.priority} status={dataItem.status} assignedTo={dataItem.assignedTo} createdBy={dataItem.createdBy} id={dataItem.id} key={dataItem.id}/>
+        <CardItem loadDataFromCards={this.props.loadDataFromCards}
+        title={dataItem.title}
+        priority={dataItem.priority}
+        status={dataItem.status}
+        assignedTo={dataItem.assignedTo}
+        createdBy={dataItem.createdBy}
+        id={dataItem.id}
+        key={dataItem.id}
+        index={dataItem.index}/>
       )
     })
     return (

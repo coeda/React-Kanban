@@ -1,55 +1,33 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { receiveCards } from '../actions/KanbanActions';
 import CardList from './CardList';
 
 class CardPage extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      data: [],
-      queueData: [],
-      inProgressData: [],
-      completedData: []
-    };
-
-    this.loadCards = this.loadCards.bind(this);
     this.onCardData = this.onCardData.bind(this);
     this.onCardError = this.onCardError.bind(this);
     this.loadDataFromCards = this.loadDataFromCards.bind(this);
     this.postDataToCards = this.postDataToCards.bind(this);
   }
 
-  loadCards() {
-    console.log('transfer completed');
-    this.loadDataFromCards('Completed');
-    this.loadDataFromCards('InProgress');
-    this.loadDataFromCards('Queue');
-  }
-
-
   onCardData(data) {
+    const { dispatch } = this.props;
     const parsedCardData = JSON.parse(data.currentTarget.response).data;
-    switch(parsedCardData[0].status){
-      case 'queue':
-        this.setState({queueData: parsedCardData});
-      break;
-      case 'in progress':
-        this.setState({inProgressData: parsedCardData});
-      break;
-      case 'completed':
-        this.setState({completedData: parsedCardData});
-      break;
-    }
+    dispatch(receiveCards(parsedCardData));
   }
 
   onCardError(error){
+    console.error(error);
   }
 
-  loadDataFromCards(status) {
+  loadDataFromCards() {
     const oReq = new XMLHttpRequest();
     oReq.addEventListener('load', this.onCardData);
     oReq.addEventListener('error', this.onCardError);
-    oReq.open('GET', this.props.cardUrl + status);
+    oReq.open('GET', this.props.cardUrl);
     oReq.send();
   }
 
@@ -57,7 +35,7 @@ class CardPage extends React.Component {
     e.preventDefault();
     const oReq = new XMLHttpRequest();
     let params = `title=${this.refs.title.value}&priority=${this.refs.priority.value}&status=${this.refs.status.value}&createdBy=${this.refs.createdBy.value}&assignedTo=${this.refs.assignedTo.value}`;
-    oReq.addEventListener('load', this.loadCards());
+    oReq.addEventListener('load', this.loadDataFromCards());
     oReq.open('POST', '/');
     oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     oReq.send(params);
@@ -66,7 +44,7 @@ class CardPage extends React.Component {
 
 
   componentWillMount() {
-    this.loadCards();
+    this.loadDataFromCards();
   }
 
   render() {
@@ -90,7 +68,8 @@ class CardPage extends React.Component {
           <input type='text' name='assignedTo' ref='assignedTo' placeholder='Assigned to'/>
           <button type="submit" >submit</button>
         </form>
-        <CardList loadCards = {this.loadCards} queueData={this.state.queueData} inProgressData={this.state.inProgressData} completedData={this.state.completedData}/>
+        <CardList data={this.props.data}
+        loadDataFromCards={this.loadDataFromCards}/>
       </div>
     )
   }
@@ -98,16 +77,15 @@ class CardPage extends React.Component {
 
 CardPage.defaultProps = {
   data: React.PropTypes.array,
-  queueData: React.PropTypes.array,
-  inProgressData: React.PropTypes.array,
-  completedData: React.PropTypes.array
 }
 
-CardPage.defaultProps = {
-  data: [],
-  queueData: [],
-  inProgressData: [],
-  completedData: []
+const mapStateToProps = (state, ownProps) => {
+  const { kanbanReducer } = state;
+  return {
+    data: kanbanReducer.toJS()
+  }
 }
 
-export default CardPage;
+export default connect(
+  mapStateToProps
+)(CardPage);

@@ -20,47 +20,11 @@ const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 
 app.use(express.static('./public'));
-// app.set('view engine', 'pug');
-// app.set('views', './views');
 app.use(bodyParser.urlencoded({ extended: true}));
-// app.use(session({
-//   store: new RedisStore(),
-//   secret: CONFIG.SECRET,
-//   resave: false,
-//   saveUninitialized: true
-// }));
-// app.use(passport.initialize());
-// app.use(passport.session());
 
-  app.get('/apiQueue', (req,res) => {
-    Card.findAll({
-      where: {
-        status: 'queue'
-      },
-      order: [['priority', 'DESC']]
-    })
-    .then((data) => {
-      res.json({data});
-    });
-  });
 
-  app.get('/apiInProgress', (req,res) => {
+  app.get('/api', (req,res) => {
     Card.findAll({
-      where: {
-        status: 'in progress'
-      },
-      order: [['priority', 'DESC']]
-    })
-    .then((data) => {
-      res.json({data});
-    });
-  });
-
-  app.get('/apiCompleted', (req,res) => {
-    Card.findAll({
-      where: {
-        status: 'completed'
-      },
       order: [['priority', 'DESC']]
     })
     .then((data) => {
@@ -88,11 +52,19 @@ app.use(bodyParser.urlencoded({ extended: true}));
           status: req.body.status,
           createdBy: req.body.createdBy,
           assignedTo: req.body.assignedTo
+        })
+        .then((data) => {
+          Card.findAll({
+            order: [['priority', 'DESC']]
+          })
+          .then((data) => {
+            res.json({data});
+          });
         });
     });
   });
 
-  app.delete('/', (req,res) => {
+  app.delete('/api/:id', (req,res) => {
     let id = parseInt(req.params.id);
     Card.findById(id)
     .then((photo) => {

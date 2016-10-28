@@ -1,21 +1,39 @@
 import React from 'react';
+import { receiveCards, deleteCard } from '../actions/KanbanActions';
+import { connect } from 'react-redux';
 import styles from './Styles.scss';
 
 class CardItem extends React.Component {
     constructor() {
       super();
 
+      this.onUpdatedData = this.onUpdatedData.bind(this);
       this.updateDataCards = this.updateDataCards.bind(this);
-
     }
 
+  onUpdatedData(data) {
+    const { dispatch } = this.props;
+    const parsedCardData = JSON.parse(data.currentTarget.response).data;
+    dispatch(receiveCards(parsedCardData));
+  }
+
   updateDataCards(status) {
-    console.log(this.props);
-    event.preventDefault()
+    event.preventDefault();
     const oReq = new XMLHttpRequest();
+    oReq.addEventListener('load', this.onUpdatedData);
     let params = `title=${this.props.title}&priority=${this.props.priority}&status=${status}&createdBy=${this.props.createdBy}&assignedTo=${this.props.assignedTo}&id=${this.props.id}`;
-    oReq.addEventListener('load', this.props.loadCards());
     oReq.open('PUT', `/api/${this.props.id}`);
+    oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    oReq.send(params);
+  }
+
+  deleteDataCard(){
+    event.preventDefault();
+    const { dispatch, index } = this.props;
+    dispatch(deleteCard(index));
+    const oReq = new XMLHttpRequest();
+    let params = `id=${this.props.id}`;
+    oReq.open('DELETE', `/api/${this.props.id}`);
     oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     oReq.send(params);
   }
@@ -33,16 +51,21 @@ class CardItem extends React.Component {
         priority = styles.high;
       break;
     }
+
     let statusButton;
     switch(this.props.status){
       case 'queue':
-        statusButton = <button onClick={()=>{this.updateDataCards('in progress')}}>In Progress</button>
+        statusButton = <div><button onClick={()=>{this.updateDataCards('in progress')}}>In Progress</button>
+        <p><button onClick={()=> {this.deleteDataCard()}}>Delete</button></p></div>
       break;
       case 'in progress':
-        statusButton = <div><button onClick={()=>{this.updateDataCards('queue')}}>Queue</button><button onClick={()=>{this.updateDataCards('completed')}}>Completed</button></div>
+        statusButton = <div><button onClick={()=>{this.updateDataCards('queue')}}>Queue</button>
+        <button onClick={()=>{this.updateDataCards('completed')}}>Completed</button>
+        <p><button onClick={()=> {this.deleteDataCard()}}>Delete</button></p></div>
       break;
       case 'completed':
-        statusButton = <button onClick={()=>{this.updateDataCards('in progress')}}>In Progress</button>
+        statusButton = <div><button onClick={()=>{this.updateDataCards('in progress')}}>In Progress</button>
+        <p><button onClick={()=> {this.deleteDataCard()}}>Delete</button></p></div>
     }
     return(
       <div className={priority}>
@@ -50,9 +73,10 @@ class CardItem extends React.Component {
         <p>Created By: {this.props.createdBy}</p>
         <p>Assigned To: {this.props.assignedTo}</p>
         <p>{statusButton}</p>
+
       </div>
     )
   }
 }
 
-export default CardItem;
+export default connect()(CardItem);
