@@ -6,19 +6,16 @@ class CardItem extends React.Component {
       super();
 
       this.updateDataCards = this.updateDataCards.bind(this);
+
     }
 
   updateDataCards(status) {
-    //this.preventDefault();
+    console.log(this.props);
+    event.preventDefault()
     const oReq = new XMLHttpRequest();
-    let params = `title=${this.props.title}&
-    priority=${this.props.priority}&
-    status=${status}&
-    createdBy=${this.props.createdBy}&
-    assignedTo=${this.props.assignedTo}&
-    id=${this.props.id}`;
-    //oReq.addEventListener('load', this.loadCards());
-    oReq.open('PUT', '/');
+    let params = `title=${this.props.title}&priority=${this.props.priority}&status=${status}&createdBy=${this.props.createdBy}&assignedTo=${this.props.assignedTo}&id=${this.props.id}`;
+    oReq.addEventListener('load', this.props.loadCards());
+    oReq.open('PUT', `/api/${this.props.id}`);
     oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     oReq.send(params);
   }

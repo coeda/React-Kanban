@@ -90,7 +90,7 @@ class CardPage extends React.Component {
           <input type='text' name='assignedTo' ref='assignedTo' placeholder='Assigned to'/>
           <button type="submit" >submit</button>
         </form>
-        <CardList queueData={this.state.queueData} inProgressData={this.state.inProgressData} completedData={this.state.completedData}/>
+        <CardList loadCards = {this.loadCards} queueData={this.state.queueData} inProgressData={this.state.inProgressData} completedData={this.state.completedData}/>
       </div>
     )
   }

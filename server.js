@@ -20,17 +20,17 @@ const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 
 app.use(express.static('./public'));
-app.set('view engine', 'pug');
-app.set('views', './views');
+// app.set('view engine', 'pug');
+// app.set('views', './views');
 app.use(bodyParser.urlencoded({ extended: true}));
-app.use(session({
-  store: new RedisStore(),
-  secret: CONFIG.SECRET,
-  resave: false,
-  saveUninitialized: true
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(session({
+//   store: new RedisStore(),
+//   secret: CONFIG.SECRET,
+//   resave: false,
+//   saveUninitialized: true
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
   app.get('/apiQueue', (req,res) => {
     Card.findAll({
@@ -78,9 +78,9 @@ app.use(passport.session());
     });
   });
 
-  app.put('/', (req,res) => {
+  app.put('/api/:id', (req,res) => {
     let id = parseInt(req.params.id);
-    Photo.findById(id)
+    Card.findById(id)
     .then((photo) => {
         photo.update({
           title: req.body.title,
@@ -94,7 +94,7 @@ app.use(passport.session());
 
   app.delete('/', (req,res) => {
     let id = parseInt(req.params.id);
-    Photo.findById(id)
+    Card.findById(id)
     .then((photo) => {
         photo.destroy();
     });
