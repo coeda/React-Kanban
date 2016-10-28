@@ -1,0 +1,29 @@
+.KanbanCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.CardList{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  text-align: center;
+}
+.low{
+  background-color: yellow;
+}
+.medium{
+  background-color: orange;
+}
+.high{
+  background-color: red;
+}
+#queue{
+width:25%;
+}
+#inProgress{
+width: 25%;
+}
+#completed{
+width: 25%;
+}

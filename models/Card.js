@@ -5,18 +5,21 @@ module.exports = function(sequelize, DataTypes) {
     },
 
     priority: {
-      type: DataTypes.STRING
+      type: DataTypes.INTEGER
     },
 
     status: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
+    assignedTo: {
+      type: DataTypes.STRING
+    },
+    createdBy: {
+      type: DataTypes.STRING
+    }
 
   }, {
     classMethods: {
-      associate: function(models) {
-        Card.belongsTo(models.User);
-      }
     }
   });
 

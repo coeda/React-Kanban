@@ -5,39 +5,44 @@ module.exports = {
     return queryInterface.bulkInsert('Cards', [
       {
         title: 'Wash Car',
-        priority: 'high',
-        status: 'in progress',
+        priority: 3,
+        status: 'queue',
+        createdBy: 'Casey',
+        assignedTo: 'Jim',
         createdAt: new Date(),
-        updatedAt: new Date(),
-        UserId: 1
+        updatedAt: new Date()
       }, {
         title: 'Wash doge',
-        priority: 'high',
+        priority: 2,
         status: 'in progress',
+        createdBy: 'Casey',
+        assignedTo: 'Jim',
         createdAt: new Date(),
-        updatedAt: new Date(),
-        UserId: 1
+        updatedAt: new Date()
       },{
         title: 'feed doge',
-        priority: 'high',
-        status: 'in progress',
+        priority: 2,
+        status: 'queue',
+        createdBy: 'Casey',
+        assignedTo: 'Jim',
         createdAt: new Date(),
-        updatedAt: new Date(),
-        UserId: 1
+        updatedAt: new Date()
       },{
         title: 'feed cat',
-        priority: 'high',
+        priority: 3,
         status: 'in progress',
+        createdBy: 'Casey',
+        assignedTo: 'Jim',
         createdAt: new Date(),
-        updatedAt: new Date(),
-        UserId: 1
+        updatedAt: new Date()
       },{
         title: 'Wash Cat',
-        priority: 'high',
-        status: 'in progress',
+        priority: 1,
+        status: 'completed',
+        createdBy: 'Casey',
+        assignedTo: 'Jim',
         createdAt: new Date(),
-        updatedAt: new Date(),
-        UserId: 1
+        updatedAt: new Date()
       }
     ], {});
   },
