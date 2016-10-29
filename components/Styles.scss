@@ -9,14 +9,26 @@
   justify-content: space-around;
   text-align: center;
 }
-.low{
+.cardItem{
+  border-radius: 25px;
+}
+#low{
   background-color: yellow;
 }
-.medium{
+#medium{
   background-color: orange;
 }
-.high{
+#high{
   background-color: red;
+}
+.newCard{
+  margin: 0 auto;
+  width: 10%;
+  text-align: center;
+}
+
+select option[value='']{
+  display:none;
 }
 #queue{
 width:25%;

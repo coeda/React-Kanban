@@ -68,7 +68,7 @@ class CardItem extends React.Component {
         <p><button onClick={()=> {this.deleteDataCard()}}>Delete</button></p></div>
     }
     return(
-      <div className={priority}>
+      <div className={styles.cardItem} id={priority}>
         <h4>Title: {this.props.title}</h4>
         <p>Created By: {this.props.createdBy}</p>
         <p>Assigned To: {this.props.assignedTo}</p>

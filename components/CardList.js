@@ -11,26 +11,25 @@ class CardList extends React.Component {
       return data
     })
 
-      let queueCardList = cardList.filter((data) => {
-        if(data.status === 'queue'){
-          return data;
-        }
-      })
-      let inProgressCardList = cardList.filter((data) => {
-        if(data.status === 'in progress'){
-          return data;
-        }
-      })
-      let completedCardList = cardList.filter((data) => {
-        if(data.status === 'completed'){
-          return data;
-        }
-      })
+    let queueCardList = cardList.filter((data) => {
+      if(data.status === 'queue'){
+        return data;
+      }
+    });
+    let inProgressCardList = cardList.filter((data) => {
+      if(data.status === 'in progress'){
+        return data;
+      }
+    });
+    let completedCardList = cardList.filter((data) => {
+      if(data.status === 'completed'){
+        return data;
+      }
+    });
 
     const queueCardListNode = queueCardList.map((dataItem) => {
       return (
-        <CardItem loadDataFromCards={this.props.loadDataFromCards}
-        title={dataItem.title}
+        <CardItem title={dataItem.title}
         priority={dataItem.priority}
         status={dataItem.status}
         assignedTo={dataItem.assignedTo}
@@ -42,8 +41,7 @@ class CardList extends React.Component {
     })
     const inProgressCardListNode = inProgressCardList.map((dataItem) => {
       return (
-        <CardItem loadDataFromCards={this.props.loadDataFromCards}
-        title={dataItem.title}
+        <CardItem title={dataItem.title}
         priority={dataItem.priority}
         status={dataItem.status}
         assignedTo={dataItem.assignedTo}
@@ -55,8 +53,7 @@ class CardList extends React.Component {
     })
     const completedCardListNode = completedCardList.map((dataItem) => {
       return (
-        <CardItem loadDataFromCards={this.props.loadDataFromCards}
-        title={dataItem.title}
+        <CardItem title={dataItem.title}
         priority={dataItem.priority}
         status={dataItem.status}
         assignedTo={dataItem.assignedTo}

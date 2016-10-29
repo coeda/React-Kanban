@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { receiveCards } from '../actions/KanbanActions';
+import { receiveCards, showHideNewCard } from '../actions/KanbanActions';
 import CardList from './CardList';
+import styles from './Styles.scss';
 
 class CardPage extends React.Component {
   constructor() {
@@ -11,6 +12,7 @@ class CardPage extends React.Component {
     this.onCardError = this.onCardError.bind(this);
     this.loadDataFromCards = this.loadDataFromCards.bind(this);
     this.postDataToCards = this.postDataToCards.bind(this);
+    this.showNewCard = this.showNewCard.bind(this);
   }
 
   onCardData(data) {
@@ -35,11 +37,14 @@ class CardPage extends React.Component {
     e.preventDefault();
     const oReq = new XMLHttpRequest();
     let params = `title=${this.refs.title.value}&priority=${this.refs.priority.value}&status=${this.refs.status.value}&createdBy=${this.refs.createdBy.value}&assignedTo=${this.refs.assignedTo.value}`;
-    oReq.addEventListener('load', this.loadDataFromCards());
+    oReq.addEventListener('load', this.onCardData);
     oReq.open('POST', '/');
     oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     oReq.send(params);
-    document.getElementById('newCard').reset();
+    document.getElementById('newCardForm').reset();
+    const { dispatch } = this.props;
+    dispatch(showHideNewCard('none'));
+
   }
 
 
@@ -47,29 +52,38 @@ class CardPage extends React.Component {
     this.loadDataFromCards();
   }
 
+  showNewCard(){
+    const { dispatch } = this.props;
+    if(this.props.showHide === 'block'){
+      dispatch(showHideNewCard('none'));
+    } else {
+      dispatch(showHideNewCard('block'));
+    }
+  }
+
   render() {
     return (
       <div>
         <h1>Kanban Page</h1>
-        <form id='newCard' onSubmit={this.postDataToCards}>
-          <input type='text' name='title' ref='title'placeholder='Title'/>
-          <select name='priority' ref='priority'>
-            <option value='' selected >Priority</option>
-            <option value='1'>low</option>
-            <option value='2'>medium</option>
-            <option value='3'>high</option>
-          </select>
-          <select name='status' ref='status'>
-            <option value='' selected>Status</option>
-            <option>queue</option>
-            <option>in progress</option>
-          </select>
-          <input type='text' name='createdBy' ref='createdBy' placeholder='Created by'/>
-          <input type='text' name='assignedTo' ref='assignedTo' placeholder='Assigned to'/>
-          <button type="submit" >submit</button>
-        </form>
-        <CardList data={this.props.data}
-        loadDataFromCards={this.loadDataFromCards}/>
+        <button onClick={()=>{this.showNewCard()}}>New Card</button>
+          <form id='newCardForm' style={{display:this.props.showHide}} className={styles.newCard} onSubmit={this.postDataToCards}>
+            <input type='text' name='title' ref='title'placeholder='Title'/><br/>
+            <select name='priority' ref='priority'>
+              <option value='' display='none' default >Priority</option>
+              <option value='1'>low</option>
+              <option value='2'>medium</option>
+              <option value='3'>high</option>
+            </select><br/>
+            <select name='status' ref='status'>
+              <option value='' display='none' default>Status</option>
+              <option>queue</option>
+              <option>in progress</option>
+            </select><br/>
+            <input type='text' name='createdBy' ref='createdBy' placeholder='Created by'/><br/>
+            <input type='text' name='assignedTo' ref='assignedTo' placeholder='Assigned to'/><br/>
+            <button type="submit">submit</button>
+          </form>
+        <CardList data={this.props.data}/>
       </div>
     )
   }
@@ -77,12 +91,14 @@ class CardPage extends React.Component {
 
 CardPage.defaultProps = {
   data: React.PropTypes.array,
+  showHide: React.PropTypes.string
 }
 
 const mapStateToProps = (state, ownProps) => {
   const { kanbanReducer } = state;
   return {
-    data: kanbanReducer.toJS()
+    data: kanbanReducer.get('List').toJS(),
+    showHide: kanbanReducer.get('showHide')
   }
 }
 

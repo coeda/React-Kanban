@@ -20,6 +20,9 @@ module.exports = function(sequelize, DataTypes) {
 
   }, {
     classMethods: {
+      // associate: function(models) {
+      //   Card.belongsTo(models.User);
+      // }
     }
   });
 

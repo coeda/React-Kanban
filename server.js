@@ -22,8 +22,24 @@ const port = isDeveloping ? 3000 : process.env.PORT;
 app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 
+app.get('/api', (req,res) => {
+  Card.findAll({
+    order: [['priority', 'DESC']]
+  })
+  .then((data) => {
+    res.json({data});
+  });
+});
 
-  app.get('/api', (req,res) => {
+app.post('/', (req,res) => {
+  Card.create({
+    title: req.body.title,
+    priority: parseInt(req.body.priority),
+    status: req.body.status,
+    createdBy: req.body.createdBy,
+    assignedTo: req.body.assignedTo
+  })
+  .then((data) => {
     Card.findAll({
       order: [['priority', 'DESC']]
     })
@@ -31,46 +47,37 @@ app.use(bodyParser.urlencoded({ extended: true}));
       res.json({data});
     });
   });
+});
 
-  app.post('/', (req,res) => {
-    Card.create({
-      title: req.body.title,
-      priority: parseInt(req.body.priority),
-      status: req.body.status,
-      createdBy: req.body.createdBy,
-      assignedTo: req.body.assignedTo
-    });
-  });
-
-  app.put('/api/:id', (req,res) => {
-    let id = parseInt(req.params.id);
-    Card.findById(id)
-    .then((photo) => {
-        photo.update({
-          title: req.body.title,
-          priority: parseInt(req.body.priority),
-          status: req.body.status,
-          createdBy: req.body.createdBy,
-          assignedTo: req.body.assignedTo
+app.put('/api/:id', (req,res) => {
+  let id = parseInt(req.params.id);
+  Card.findById(id)
+  .then((photo) => {
+      photo.update({
+        title: req.body.title,
+        priority: parseInt(req.body.priority),
+        status: req.body.status,
+        createdBy: req.body.createdBy,
+        assignedTo: req.body.assignedTo
+      })
+      .then((data) => {
+        Card.findAll({
+          order: [['priority', 'DESC']]
         })
         .then((data) => {
-          Card.findAll({
-            order: [['priority', 'DESC']]
-          })
-          .then((data) => {
-            res.json({data});
-          });
+          res.json({data});
         });
-    });
+      });
   });
+});
 
-  app.delete('/api/:id', (req,res) => {
-    let id = parseInt(req.params.id);
-    Card.findById(id)
-    .then((photo) => {
-        photo.destroy();
-    });
+app.delete('/api/:id', (req,res) => {
+  let id = parseInt(req.params.id);
+  Card.findById(id)
+  .then((photo) => {
+      photo.destroy();
   });
+});
 
 if (isDeveloping) {
   app.set('host', 'http://localhost');
