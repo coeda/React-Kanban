@@ -1,8 +1,7 @@
 import React from 'react';
-import CardItem from './CardItem';
+import CardItem from '../CardItem/CardItem';
 import { connect } from 'react-redux';
-import styles from './Styles.scss';
-import dragable from './dragable';
+import styles from './CardListStyles.scss';
 
 class CardList extends React.Component {
 
@@ -69,9 +68,9 @@ class CardList extends React.Component {
     })
     return (
       <div className={ styles.CardList }>
-        <div id={styles.queue}><h2>Queue</h2>{queueCardListNode}</div>
-        <div id={styles.inProgress}><h2>In Progress</h2>{inProgressCardListNode}</div>
-        <div id={styles.completed}><h2>Completed</h2>{completedCardListNode}</div>
+        <div className={styles.list}><h2>Queue</h2>{queueCardListNode}</div>
+        <div className={styles.list}><h2>In Progress</h2>{inProgressCardListNode}</div>
+        <div className={styles.list}><h2>Completed</h2>{completedCardListNode}</div>
       </div>
     )
   }

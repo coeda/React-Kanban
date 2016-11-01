@@ -1,5 +1,5 @@
 import React from 'react';
-import CardPage from './components/CardPage';
+import CardPage from './components/CardPage/CardPage';
 
 class App extends React.Component {
   render() {

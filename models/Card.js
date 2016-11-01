@@ -18,13 +18,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING
     }
 
-  }, {
-    classMethods: {
-      // associate: function(models) {
-      //   Card.belongsTo(models.User);
-      // }
-    }
-  });
+  } );
 
   return Card;
 };

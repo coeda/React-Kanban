@@ -1,0 +1,88 @@
+.editButton{
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.deleteButton{
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.leftButton{
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    &:hover span:before {
+      opacity: 1;
+      left: 0;
+    }
+    &:hover span {
+      padding-left: 25px;
+    }
+    span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.7s;
+      &:before {
+        content: '«';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        left: 10px;
+        transition: 0.5s;
+      }
+    }
+}
+
+.rightButton{
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    &:hover span {
+      padding-right: 25px;
+      &:after {
+        opacity: 1;
+        right: 0;
+      }
+    }
+    span {
+      display: inline-block;
+      position: relative;
+      transition: 0.7s;
+      &:after {
+        content: '»';
+        position: absolute;
+        top: 0;
+        opacity: 0;
+        right: 10px;
+        transition: 0.5s;
+      }
+    }
+}

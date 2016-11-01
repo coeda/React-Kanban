@@ -1,0 +1,29 @@
+body{
+  margin: 0px;
+  padding: 0px;
+  background-image: url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/dark_embroidery.png');
+  color: white;
+}
+#page{
+  text-align: center;
+  font-family: 'Helvetica';
+}
+
+.KanbanCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.newCard{
+  margin: 0 auto;
+  width: 10%;
+  text-align: center;
+}
+
+select option[value='']{
+  display:none;
+}
+
+
+

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { receiveCards, showHideNewCard } from '../actions/KanbanActions';
-import CardList from './CardList';
-import styles from './Styles.scss';
+import { receiveCards, showHideNewCard } from '../../actions/KanbanActions';
+import CardList from '../CardList/CardList';
+import styles from './CardPageStyles.scss';
 
 class CardPage extends React.Component {
   constructor() {
@@ -63,8 +63,8 @@ class CardPage extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>Kanban Page</h1>
+      <div id={styles.page}>
+        <h1>KanBan Board</h1>
         <button onClick={()=>{this.showNewCard()}}>New Card</button>
         <div className={styles.newCard} style={{display:this.props.showHide}}>
           <form id='newCardForm' onSubmit={this.postDataToCards}>
@@ -82,9 +82,9 @@ class CardPage extends React.Component {
             </select><br/>
             <input type='text' name='createdBy' ref='createdBy' placeholder='Created by'/><br/>
             <input type='text' name='assignedTo' ref='assignedTo' placeholder='Assigned to'/><br/>
-            <button type="submit">submit</button>
+            <button type="submit">Submit</button>
           </form>
-          <button onClick={()=>{this.showNewCard()}}>cancel</button>
+          <button onClick={()=>{this.showNewCard()}}>Cancel</button>
         </div>
         <CardList data={this.props.data} editCard={this.props.editCard}/>
       </div>

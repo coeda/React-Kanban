@@ -1,0 +1,12 @@
+.CardList{
+  background-image: url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/cork-wallet.png');
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  min-height: 600px;
+  color: black;
+}
+
+.list{
+  width: 25%;
+}

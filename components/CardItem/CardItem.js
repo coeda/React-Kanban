@@ -1,7 +1,8 @@
 import React from 'react';
-import { receiveCards, showEditCard, editCard, deleteCard } from '../actions/KanbanActions';
+import { receiveCards, showEditCard, editCard, deleteCard } from '../../actions/KanbanActions';
 import { connect } from 'react-redux';
-import styles from './Styles.scss';
+import styles from './CardItemStyles.scss';
+import buttonStyles from './ButtonStyles.scss';
 
 class CardItem extends React.Component {
     constructor() {
@@ -27,7 +28,7 @@ class CardItem extends React.Component {
       document.getElementById(this.props.id).childNodes[0].style.display = 'block';
     } else {
       document.getElementById(this.props.id).childNodes[1].style.display = 'block';
-      document.getElementById(this.props.id).childNodes[0].style.display = 'none'
+      document.getElementById(this.props.id).childNodes[0].style.display = 'none';
     }
   }
 
@@ -127,26 +128,26 @@ class CardItem extends React.Component {
     let statusButton;
     switch(this.props.status){
       case 'queue':
-        statusButton = <div><button className={styles.rightButton} onClick={()=>{this.updateDataCards('in progress')}}><span>In Progress</span></button></div>
+        statusButton = <div><button className={buttonStyles.rightButton} onClick={()=>{this.updateDataCards('in progress')}}><span>In Progress </span></button></div>
       break;
       case 'in progress':
-        statusButton = <div><button className={styles.leftButton} onClick={()=>{this.updateDataCards('queue')}}><span>Queue</span></button>
-        <button className={styles.rightButton} onClick={()=>{this.updateDataCards('completed')}}><span>Completed</span></button></div>
+        statusButton = <div><button className={buttonStyles.leftButton} onClick={()=>{this.updateDataCards('queue')}}><span> Queue</span></button>
+        <button className={buttonStyles.rightButton} onClick={()=>{this.updateDataCards('completed')}}><span>Completed </span></button></div>
       break;
       case 'completed':
-        statusButton = <div><button className={styles.leftButton} onClick={()=>{this.updateDataCards('in progress')}}><span>In Progress</span></button></div>
+        statusButton = <div><button className={buttonStyles.leftButton} onClick={()=>{this.updateDataCards('in progress')}}><span> In Progress</span></button></div>
     }
     return(
-      <div className={priority} style={{display:'block'}} id={this.props.id}>
-        <div id='cardData' className={styles.cardData}>
+      <div className={styles.cardItem} style={{display:'block'}} id={this.props.id}>
+        <div id='cardData' className={priority}>
           <h4>Title: {this.props.title}</h4>
           <p>Created By: {this.props.createdBy}</p>
           <p>Assigned To: {this.props.assignedTo}</p>
           <p>{statusButton}</p>
-          <p><button className={styles.editButton} onClick={()=> {this.editCards()}}>Edit</button><button className={styles.deleteButton}onClick={()=> {this.deleteDataCard()}}>Delete</button></p>
+          <p><button className={buttonStyles.editButton} onClick={()=> {this.editCards()}}>Edit</button><button className={buttonStyles.deleteButton}onClick={()=> {this.deleteDataCard()}}>Delete</button></p>
         </div>
-        <div id='editCard' className={styles.cardData} style={{display:this.props.editCard}}>
-          <form id='editCardForm' onSubmit={this.editDataCard}>
+        <div id='editCard' className={priority} style={{display:this.props.editCard}}>
+          <form id='editCardForm' onSubmit={this.editDataCard}><p/>
           Title: <input type='text' name='title' ref='title' placeholder={this.props.title} /><p/>
           Priority: {this.selectedPriority()}
           <p/>
