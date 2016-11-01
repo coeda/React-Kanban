@@ -11,15 +11,33 @@
 }
 .cardItem{
   border-radius: 25px;
+  box-sizing: border-box;
+  padding: 4px;
+  margin: 8px;
+
 }
-#low{
+
+.low{
   background-color: yellow;
+  border-radius: 25px;
+  box-sizing: border-box;
+  padding: 4px;
+  margin: 8px;
+
 }
-#medium{
+.medium{
   background-color: orange;
+  border-radius: 25px;
+  box-sizing: border-box;
+  padding: 4px;
+  margin: 8px;
 }
-#high{
+.high{
   background-color: red;
+  border-radius: 25px;
+  box-sizing: border-box;
+  padding: 4px;
+  margin: 8px;
 }
 .newCard{
   margin: 0 auto;

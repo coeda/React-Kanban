@@ -1,5 +1,5 @@
 import React from 'react';
-import { receiveCards, deleteCard } from '../actions/KanbanActions';
+import { receiveCards, showEditCard, editCard, deleteCard } from '../actions/KanbanActions';
 import { connect } from 'react-redux';
 import styles from './Styles.scss';
 
@@ -9,12 +9,27 @@ class CardItem extends React.Component {
 
       this.onUpdatedData = this.onUpdatedData.bind(this);
       this.updateDataCards = this.updateDataCards.bind(this);
+      this.editDataCard = this.editDataCard.bind(this);
+      this.deleteDataCard = this.deleteDataCard.bind(this);
+      this.editCards = this.editCards.bind(this);
     }
 
   onUpdatedData(data) {
     const { dispatch } = this.props;
     const parsedCardData = JSON.parse(data.currentTarget.response).data;
     dispatch(receiveCards(parsedCardData));
+  }
+
+  editCards(){
+    console.log(document.getElementById(this.props.id).childNodes)
+    let selectedItem = document.getElementById(this.props.id).childNodes[1].style.display;
+    if(selectedItem === 'block'){
+      document.getElementById(this.props.id).childNodes[1].style.display = 'none';
+      document.getElementById(this.props.id).childNodes[0].style.display = 'block';
+    } else {
+      document.getElementById(this.props.id).childNodes[1].style.display = 'block';
+      document.getElementById(this.props.id).childNodes[0].style.display = 'none'
+    }
   }
 
   updateDataCards(status) {
@@ -27,6 +42,16 @@ class CardItem extends React.Component {
     oReq.send(params);
   }
 
+  editDataCard(e) {
+    e.preventDefault();
+    console.log(this.refs.id);
+    const oReq = new XMLHttpRequest();
+    oReq.addEventListener('load', this.onUpdatedData);
+    let params = `title=${this.refs.title.value}&priority=${this.refs.priority.value}&status=${this.refs.status.value}&createdBy=${this.refs.createdBy.value}&assignedTo=${this.refs.assignedTo.value}`;
+    oReq.open('PUT', `/api/${this.props.id}`);
+    oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    oReq.send(params);  }
+
   deleteDataCard(){
     event.preventDefault();
     const { dispatch, index } = this.props;
@@ -36,6 +61,54 @@ class CardItem extends React.Component {
     oReq.open('DELETE', `/api/${this.props.id}`);
     oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     oReq.send(params);
+  }
+
+  selectedPriority(){
+    let priority;
+    if (this.props.priority === 1){
+    priority = <select name='priority' ref='priority'>
+      <option value='1' selected>low</option>
+      <option value='2'>medium</option>
+      <option value='3'>high</option>
+    </select>;
+    } else if (this.props.priority === 2) {
+    priority = <select name='priority' ref='priority'>
+      <option value='1'>low</option>
+      <option value='2' selected>medium</option>
+      <option value='3'>high</option>
+    </select>;
+    } else {
+    priority = <select name='priority' ref='priority'>
+      <option value='1'>low</option>
+      <option value='2'>medium</option>
+      <option value='3' selected>high</option>
+    </select>;
+    }
+    return priority;
+  }
+
+  selectedQueue(){
+    let queue;
+    if(this.props.status === 'queue'){
+      queue = <select name='status' ref='status' placeholder={this.props.status}>
+        <option selected>queue</option>
+        <option>in progress</option>
+        <option>completed</option>
+      </select>;
+    } else if(this.props.status === 'in progress') {
+      queue = <select name='status' ref='status' placeholder={this.props.status}>
+        <option>queue</option>
+        <option selected>in progress</option>
+        <option>completed</option>
+      </select>;
+    } else {
+      queue = <select name='status' ref='status' placeholder={this.props.status}>
+        <option>queue</option>
+        <option>in progress</option>
+        <option selected>completed</option>
+      </select>;
+    }
+    return queue;
   }
 
   render() {
@@ -55,25 +128,36 @@ class CardItem extends React.Component {
     let statusButton;
     switch(this.props.status){
       case 'queue':
-        statusButton = <div><button onClick={()=>{this.updateDataCards('in progress')}}>In Progress</button>
-        <p><button onClick={()=> {this.deleteDataCard()}}>Delete</button></p></div>
+        statusButton = <div><button onClick={()=>{this.updateDataCards('in progress')}}>In Progress</button></div>
       break;
       case 'in progress':
         statusButton = <div><button onClick={()=>{this.updateDataCards('queue')}}>Queue</button>
-        <button onClick={()=>{this.updateDataCards('completed')}}>Completed</button>
-        <p><button onClick={()=> {this.deleteDataCard()}}>Delete</button></p></div>
+        <button onClick={()=>{this.updateDataCards('completed')}}>Completed</button></div>
       break;
       case 'completed':
-        statusButton = <div><button onClick={()=>{this.updateDataCards('in progress')}}>In Progress</button>
-        <p><button onClick={()=> {this.deleteDataCard()}}>Delete</button></p></div>
+        statusButton = <div><button onClick={()=>{this.updateDataCards('in progress')}}>In Progress</button></div>
     }
     return(
-      <div className={styles.cardItem} id={priority}>
-        <h4>Title: {this.props.title}</h4>
-        <p>Created By: {this.props.createdBy}</p>
-        <p>Assigned To: {this.props.assignedTo}</p>
-        <p>{statusButton}</p>
-
+      <div className={priority} style={{display:'block'}} id={this.props.id}>
+        <div id='cardData'>
+          <h4>Title: {this.props.title}</h4>
+          <p>Created By: {this.props.createdBy}</p>
+          <p>Assigned To: {this.props.assignedTo}</p>
+          <p>{statusButton}</p>
+          <p><button onClick={()=> {this.editCards()}}>Edit</button><button onClick={()=> {this.deleteDataCard()}}>Delete</button></p>
+        </div>
+        <div id='editCard' style={{display:this.props.editCard}}>
+          <form id='editCardForm' className={styles.newCard} onSubmit={this.editDataCard}>
+          Title: <input type='text' name='title' ref='title' placeholder={this.props.title} /><br/>
+          Priority: {this.selectedPriority()}
+          Status: {this.selectedQueue()}
+            <br/>
+          Created by: <input type='text' name='createdBy' ref='createdBy' placeholder={this.props.createdBy} /><br/>
+          Assigned to: <input type='text' name='assignedTo' ref='assignedTo' placeholder={this.props.assignedTo} /><br/>
+          <button onClick={()=> {this.editCards()}} type="submit">submit</button>
+          </form>
+          <button onClick={()=> {this.editCards()}}>cancel</button>
+        </div>
       </div>
     )
   }

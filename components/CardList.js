@@ -1,5 +1,6 @@
 import React from 'react';
 import CardItem from './CardItem';
+import { connect } from 'react-redux';
 import styles from './Styles.scss';
 import dragable from './dragable';
 
@@ -36,7 +37,8 @@ class CardList extends React.Component {
         createdBy={dataItem.createdBy}
         id={dataItem.id}
         key={dataItem.id}
-        index={dataItem.index}/>
+        index={dataItem.index}
+        editCard={this.props.editCard}/>
       )
     })
     const inProgressCardListNode = inProgressCardList.map((dataItem) => {
@@ -48,7 +50,8 @@ class CardList extends React.Component {
         createdBy={dataItem.createdBy}
         id={dataItem.id}
         key={dataItem.id}
-        index={dataItem.index}/>
+        index={dataItem.index}
+        editCard={this.props.editCard}/>
       )
     })
     const completedCardListNode = completedCardList.map((dataItem) => {
@@ -60,7 +63,8 @@ class CardList extends React.Component {
         createdBy={dataItem.createdBy}
         id={dataItem.id}
         key={dataItem.id}
-        index={dataItem.index}/>
+        index={dataItem.index}
+        editCard={this.props.editCard}/>
       )
     })
     return (
@@ -73,4 +77,4 @@ class CardList extends React.Component {
   }
 }
 
-export default CardList;
+export default connect()(CardList);

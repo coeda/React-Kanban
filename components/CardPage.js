@@ -66,7 +66,8 @@ class CardPage extends React.Component {
       <div>
         <h1>Kanban Page</h1>
         <button onClick={()=>{this.showNewCard()}}>New Card</button>
-          <form id='newCardForm' style={{display:this.props.showHide}} className={styles.newCard} onSubmit={this.postDataToCards}>
+        <div className={styles.newCard} style={{display:this.props.showHide}}>
+          <form id='newCardForm' onSubmit={this.postDataToCards}>
             <input type='text' name='title' ref='title'placeholder='Title'/><br/>
             <select name='priority' ref='priority'>
               <option value='' display='none' default >Priority</option>
@@ -83,22 +84,27 @@ class CardPage extends React.Component {
             <input type='text' name='assignedTo' ref='assignedTo' placeholder='Assigned to'/><br/>
             <button type="submit">submit</button>
           </form>
-        <CardList data={this.props.data}/>
+          <button onClick={()=>{this.showNewCard()}}>cancel</button>
+        </div>
+        <CardList data={this.props.data} editCard={this.props.editCard}/>
       </div>
+
     )
   }
 }
 
 CardPage.defaultProps = {
   data: React.PropTypes.array,
-  showHide: React.PropTypes.string
+  showHide: React.PropTypes.string,
+  editCard: React.PropTypes.string
 }
 
 const mapStateToProps = (state, ownProps) => {
   const { kanbanReducer } = state;
   return {
     data: kanbanReducer.get('List').toJS(),
-    showHide: kanbanReducer.get('showHide')
+    showHide: kanbanReducer.get('showHide'),
+    editCard: kanbanReducer.get('editCard')
   }
 }
 

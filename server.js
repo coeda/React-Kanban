@@ -52,13 +52,13 @@ app.post('/', (req,res) => {
 app.put('/api/:id', (req,res) => {
   let id = parseInt(req.params.id);
   Card.findById(id)
-  .then((photo) => {
-      photo.update({
-        title: req.body.title,
-        priority: parseInt(req.body.priority),
-        status: req.body.status,
-        createdBy: req.body.createdBy,
-        assignedTo: req.body.assignedTo
+  .then((card) => {
+      card.update({
+        title: req.body.title || card.title,
+        priority: parseInt(req.body.priority) || card.priority,
+        status: req.body.status || card.status,
+        createdBy: req.body.createdBy || card.createdBy,
+        assignedTo: req.body.assignedTo || card.assignedTo
       })
       .then((data) => {
         Card.findAll({
