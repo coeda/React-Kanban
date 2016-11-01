@@ -14,46 +14,150 @@
   box-sizing: border-box;
   padding: 4px;
   margin: 8px;
-
 }
 
 .low{
   background-color: yellow;
-  border-radius: 25px;
-  box-sizing: border-box;
   padding: 4px;
   margin: 8px;
-
+  height:225px;
 }
 .medium{
   background-color: orange;
-  border-radius: 25px;
-  box-sizing: border-box;
   padding: 4px;
   margin: 8px;
+  height:225px;
 }
 .high{
   background-color: red;
-  border-radius: 25px;
-  box-sizing: border-box;
   padding: 4px;
   margin: 8px;
+  height:225px;
 }
 .newCard{
   margin: 0 auto;
   width: 10%;
   text-align: center;
 }
-
+.cardData{
+  padding: 4px;
+  margin: 8px;
+  height:225px;
+}
 select option[value='']{
   display:none;
 }
+
 #queue{
 width:25%;
 }
+
 #inProgress{
 width: 25%;
 }
+
 #completed{
 width: 25%;
+}
+
+.editButton{
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.deleteButton{
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.leftButton{
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+
+.leftButton span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.leftButton span:after {
+  content: '«';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: -20px;
+  transition: 0.5s;
+}
+
+.leftButton:hover span {
+  padding-left: 25px;
+}
+
+.rightButton{
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+
+}
+
+.rightButton span {
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+  &::after {
+    content: '»';
+    color:red;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+  }
+}
+
+.rightButton span::after {
+  content: '»';
+  color:red;
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.rightButton:hover span {
+  padding-right: 25px;
+  &::after{
+    content:'test';
+  }
 }
