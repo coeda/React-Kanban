@@ -66,49 +66,34 @@ class CardItem extends React.Component {
   selectedPriority(){
     let priority;
     if (this.props.priority === 1){
-    priority = <select name='priority' ref='priority'>
-      <option value='1' selected>low</option>
-      <option value='2'>medium</option>
-      <option value='3'>high</option>
-    </select>;
+    priority = '1'
     } else if (this.props.priority === 2) {
-    priority = <select name='priority' ref='priority'>
-      <option value='1'>low</option>
-      <option value='2' selected>medium</option>
-      <option value='3'>high</option>
-    </select>;
+    priority = '2'
     } else {
-    priority = <select name='priority' ref='priority'>
-      <option value='1'>low</option>
-      <option value='2'>medium</option>
-      <option value='3' selected>high</option>
-    </select>;
+    priority = '3'
     }
-    return priority;
+    return <select name='priority' ref='priority' defaultValue={priority}>
+      <option value='1'>Low</option>
+      <option value='2'>Medium</option>
+      <option value='3'>High</option>
+    </select>
   }
 
   selectedQueue(){
-    let queue;
+    let value;
     if(this.props.status === 'queue'){
-      queue = <select name='status' ref='status' placeholder={this.props.status}>
-        <option selected>queue</option>
-        <option>in progress</option>
-        <option>completed</option>
-      </select>;
+      value = 'queue';
     } else if(this.props.status === 'in progress') {
-      queue = <select name='status' ref='status' placeholder={this.props.status}>
-        <option>queue</option>
-        <option selected>in progress</option>
-        <option>completed</option>
-      </select>;
+      value = 'in progress';
     } else {
-      queue = <select name='status' ref='status' placeholder={this.props.status}>
-        <option>queue</option>
-        <option>in progress</option>
-        <option selected>completed</option>
-      </select>;
+      value = 'completed';
     }
-    return queue;
+
+    return <select name='status' ref='status' defaultValue={value}>
+        <option value='queue'>Queue</option>
+        <option value='in progress'>In Progress</option>
+        <option value='completed'>Completed</option>
+      </select>
   }
 
   render() {
@@ -140,11 +125,11 @@ class CardItem extends React.Component {
     return(
       <div className={styles.cardItem} style={{display:'block'}} id={this.props.id}>
         <div id='cardData' className={priority}>
-          <h4>Title: {this.props.title}</h4>
-          <p>Created By: {this.props.createdBy}</p>
-          <p>Assigned To: {this.props.assignedTo}</p>
-          <p>{statusButton}</p>
-          <p><button className={buttonStyles.editButton} onClick={()=> {this.editCards()}}>Edit</button><button className={buttonStyles.deleteButton}onClick={()=> {this.deleteDataCard()}}>Delete</button></p>
+          <h2>{this.props.title}</h2>
+          <h4>Created By: {this.props.createdBy}</h4>
+          <h4>Assigned To: {this.props.assignedTo}</h4>
+          {statusButton}
+          <button className={buttonStyles.editButton} onClick={()=> {this.editCards()}}>Edit</button><button className={buttonStyles.deleteButton}onClick={()=> {this.deleteDataCard()}}>Delete</button>
         </div>
         <div id='editCard' className={priority} style={{display:this.props.editCard}}>
           <form id='editCardForm' onSubmit={this.editDataCard}><p/>

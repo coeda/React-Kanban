@@ -12,6 +12,7 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
+const api = require('./routes/api');
 const db = require('./models');
 const Card = db.Card;
 const User = db.User;
@@ -21,63 +22,8 @@ const port = isDeveloping ? 3000 : process.env.PORT;
 
 app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({ extended: true}));
+app.use('/api', api);
 
-app.get('/api', (req,res) => {
-  Card.findAll({
-    order: [['priority', 'DESC']]
-  })
-  .then((data) => {
-    res.json({data});
-  });
-});
-
-app.post('/', (req,res) => {
-  Card.create({
-    title: req.body.title,
-    priority: parseInt(req.body.priority),
-    status: req.body.status,
-    createdBy: req.body.createdBy,
-    assignedTo: req.body.assignedTo
-  })
-  .then((data) => {
-    Card.findAll({
-      order: [['priority', 'DESC']]
-    })
-    .then((data) => {
-      res.json({data});
-    });
-  });
-});
-
-app.put('/api/:id', (req,res) => {
-  let id = parseInt(req.params.id);
-  Card.findById(id)
-  .then((card) => {
-      card.update({
-        title: req.body.title || card.title,
-        priority: parseInt(req.body.priority) || card.priority,
-        status: req.body.status || card.status,
-        createdBy: req.body.createdBy || card.createdBy,
-        assignedTo: req.body.assignedTo || card.assignedTo
-      })
-      .then((data) => {
-        Card.findAll({
-          order: [['priority', 'DESC']]
-        })
-        .then((data) => {
-          res.json({data});
-        });
-      });
-  });
-});
-
-app.delete('/api/:id', (req,res) => {
-  let id = parseInt(req.params.id);
-  Card.findById(id)
-  .then((photo) => {
-      photo.destroy();
-  });
-});
 
 if (isDeveloping) {
   app.set('host', 'http://localhost');

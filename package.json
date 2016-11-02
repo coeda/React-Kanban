@@ -52,6 +52,5 @@
     "webpack-hot-middleware": "^2.13.0"
   },
   "devDependencies": {
-    "gulp-nodemon": "^2.2.1"
-  }
+      }
 }

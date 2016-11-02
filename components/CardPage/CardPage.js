@@ -38,7 +38,7 @@ class CardPage extends React.Component {
     const oReq = new XMLHttpRequest();
     let params = `title=${this.refs.title.value}&priority=${this.refs.priority.value}&status=${this.refs.status.value}&createdBy=${this.refs.createdBy.value}&assignedTo=${this.refs.assignedTo.value}`;
     oReq.addEventListener('load', this.onCardData);
-    oReq.open('POST', '/');
+    oReq.open('POST', '/api');
     oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     oReq.send(params);
     document.getElementById('newCardForm').reset();
@@ -66,19 +66,20 @@ class CardPage extends React.Component {
       <div id={styles.page}>
         <h1>KanBan Board</h1>
         <button onClick={()=>{this.showNewCard()}}>New Card</button>
+        <p/>
         <div className={styles.newCard} style={{display:this.props.showHide}}>
           <form id='newCardForm' onSubmit={this.postDataToCards}>
             <input type='text' name='title' ref='title'placeholder='Title'/><br/>
-            <select name='priority' ref='priority'>
-              <option value='' display='none' default >Priority</option>
-              <option value='1'>low</option>
-              <option value='2'>medium</option>
-              <option value='3'>high</option>
+            <select name='priority' ref='priority' defaultValue=''>
+              <option value='' display='none'>Priority</option>
+              <option value='1'>Low</option>
+              <option value='2'>Medium</option>
+              <option value='3'>High</option>
             </select><br/>
-            <select name='status' ref='status'>
-              <option value='' display='none' default>Status</option>
-              <option>queue</option>
-              <option>in progress</option>
+            <select name='status' ref='status' defaultValue=''>
+              <option value='' display='none'>Status</option>
+              <option value='queue'>Queue</option>
+              <option value='in progress'>In Progress</option>
             </select><br/>
             <input type='text' name='createdBy' ref='createdBy' placeholder='Created by'/><br/>
             <input type='text' name='assignedTo' ref='assignedTo' placeholder='Assigned to'/><br/>
